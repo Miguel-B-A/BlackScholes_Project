@@ -1,4 +1,4 @@
-# 📈 BlackScholes_Project
+#  BlackScholes_Project
 
 A personal implementation of the **Black–Scholes–Merton (BSM)** model for pricing European-style options, with an interactive Streamlit dashboard.
 
