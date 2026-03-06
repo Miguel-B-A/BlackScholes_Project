@@ -6,7 +6,7 @@ A personal implementation of the **Black–Scholes–Merton (BSM)** model for pr
 
 ---
 
-## 🧠 What is the Black–Scholes–Merton Model?
+##  What is the Black–Scholes–Merton Model?
 
 The **Black–Scholes–Merton (BSM)** model is the mathematical framework used to determine the **theoretical fair price of European-style options**. It was introduced by Fischer Black, Myron Scholes, and Robert Merton in 1973, and it revolutionized quantitative finance — Scholes and Merton were awarded the Nobel Prize in Economics in 1997.
 
@@ -59,7 +59,7 @@ The Greeks measure the **sensitivity of the option price** to changes in market 
 
 ---
 
-## 📊 Features
+## Features 📊 
 
 - ✅ Real-time Call & Put pricing
 - ✅ Full Greeks calculation (Δ, Γ, Θ, V, ρ)
@@ -71,7 +71,7 @@ The Greeks measure the **sensitivity of the option price** to changes in market 
 
 ---
 
-## 🗂️ Project Structure
+## Project Structure
 
 ```
 BlackScholes_Project/
@@ -87,7 +87,7 @@ The project is intentionally split into two files:
 
 ---
 
-## 🚀 How to Run Locally
+##  How to Run it Locally on your system
 
 ### 1. Prerequisites
 
@@ -132,7 +132,7 @@ The app will open automatically in your browser at `http://localhost:8501`.
 
 ---
 
-## 📦 Dependencies
+##  Dependencies
 
 | Package | Purpose |
 |---------|---------|
@@ -151,7 +151,3 @@ The app will open automatically in your browser at `http://localhost:8501`.
 - Hull, J. C. — *Options, Futures, and Other Derivatives*
 
 ---
-
-## 🙌 Inspiration
-
-Inspired by [prudhvi-reddy-m/BlackScholes](https://github.com/prudhvi-reddy-m/BlackScholes).
