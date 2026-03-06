@@ -1,10 +1,10 @@
-import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 import streamlit as st
 
-from black_scholes import BS, compute_heatmap_grid
+from black_scholes import BS  # solo necesita la clase BS
 
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(page_title="BSM Options Calculator", page_icon="📈", layout="wide")
@@ -61,7 +61,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ── Inputs + Results ──────────────────────────────────────────────────────────
+# ── Inputs ────────────────────────────────────────────────────────────────────
 left, right = st.columns([1, 1.2], gap="large")
 
 with left:
@@ -73,8 +73,10 @@ with left:
     vol    = st.slider("Volatility σ (%)",   1.0,  200.0,  20.0,  0.5,  format="%.1f%%")
     mult   = st.number_input("Contract Multiplier", min_value=1, value=100, step=1)
 
+# ── Model ─────────────────────────────────────────────────────────────────────
 bs = BS(spot, strike, rate, days, vol, mult)
 
+# ── Results ───────────────────────────────────────────────────────────────────
 with right:
     st.markdown('<div class="section-label">Results</div>', unsafe_allow_html=True)
 
@@ -142,9 +144,8 @@ for col, (key, val) in zip([i1, i2, i3, i4, i5], [
 # ── Heatmap Section ───────────────────────────────────────────────────────────
 st.markdown("---")
 st.markdown('<div class="section-label">Heatmap Explorer · Spot Price vs Volatility</div>', unsafe_allow_html=True)
-st.info("🟢 Verde = precio más alto  ·  🔴 Rojo = precio más bajo  ·  La cruz ✚ marca los parámetros actuales.")
+st.info("🟢 Verde = precio más alto  ·  🔴 Rojo = precio más bajo  ·  El recuadro blanco marca los parámetros actuales.")
 
-# Heatmap range controls
 hc1, hc2, hc3, hc4 = st.columns(4)
 with hc1:
     spot_min = st.number_input("Min Spot Price", min_value=0.01, value=round(spot * 0.8, 2), step=1.0)
@@ -161,21 +162,29 @@ elif vol_min >= vol_max:
     st.warning("Min Volatility debe ser menor que Max Volatility.")
 else:
     with st.spinner("Calculando heatmap..."):
-        spot_range, vol_range, call_grid, put_grid = compute_heatmap_grid(
-            spot, strike, rate, days, vol, mult,
-            spot_min, spot_max, vol_min, vol_max, n=15
-        )
+        n = 15
+        spot_range = np.linspace(spot_min, spot_max, n)
+        vol_range  = np.linspace(vol_min,  vol_max,  n)
 
-    # Custom red → yellow → green colormap
+        call_grid = np.zeros((n, n))
+        put_grid  = np.zeros((n, n))
+
+        # Iterar sobre cada combinación de Spot y Volatilidad
+        for i, v in enumerate(vol_range):
+            for j, s in enumerate(spot_range):
+                model = BS(s, strike, rate, days, v * 100, mult)
+                call_grid[i, j] = model.call_price
+                put_grid[i, j]  = model.put_price
+
+    # Colormap rojo → amarillo → verde
     rg_cmap = mcolors.LinearSegmentedColormap.from_list(
         "rg", ["#7f0000", "#c0392b", "#e74c3c", "#f39c12", "#f1c40f", "#2ecc71", "#006400"]
     )
 
-    # Axis tick labels
-    x_labels = [f"{v:.1f}" for v in spot_range]
+    x_labels = [f"{v:.1f}"  for v in spot_range]
     y_labels  = [f"{v:.2f}" for v in vol_range]
 
-    # Find current position on grid
+    # Posición actual en el grid
     cx = int(np.argmin(np.abs(spot_range - spot)))
     cy = int(np.argmin(np.abs(vol_range  - (vol / 100))))
 
@@ -187,7 +196,6 @@ else:
         (ax_put,  put_grid,  "PUT"),
     ]:
         ax.set_facecolor("#111318")
-
         sns.heatmap(
             grid,
             xticklabels=x_labels,
@@ -202,23 +210,23 @@ else:
             annot_kws={"size": 8, "color": "white", "fontfamily": "monospace"},
         )
 
-        # Style colorbar
         cbar = ax.collections[0].colorbar
         cbar.ax.yaxis.set_tick_params(color="white", labelsize=8)
         plt.setp(cbar.ax.yaxis.get_ticklabels(), color="#aab0c0", fontfamily="monospace")
         cbar.outline.set_edgecolor("#1e2530")
 
-        # Mark current position
+        # Marcar posición actual
         ax.add_patch(plt.Rectangle((cx, cy), 1, 1, fill=False,
                                     edgecolor="white", lw=2.5, zorder=5))
         ax.plot(cx + 0.5, cy + 0.5, marker="+", markersize=14,
                 color="white", markeredgewidth=2.5, zorder=6)
 
-        # Title & labels
         ax.set_title(title, color="#e8edf5", fontsize=14, fontweight="bold",
                      fontfamily="monospace", pad=14)
-        ax.set_xlabel("Spot Price ($)", color="#6b7a94", fontsize=10, fontfamily="monospace", labelpad=8)
-        ax.set_ylabel("Volatility",     color="#6b7a94", fontsize=10, fontfamily="monospace", labelpad=8)
+        ax.set_xlabel("Spot Price ($)", color="#6b7a94", fontsize=10,
+                      fontfamily="monospace", labelpad=8)
+        ax.set_ylabel("Volatility",     color="#6b7a94", fontsize=10,
+                      fontfamily="monospace", labelpad=8)
         ax.tick_params(colors="#6b7a94", labelsize=8)
         for spine in ax.spines.values():
             spine.set_edgecolor("#1e2530")
@@ -226,5 +234,4 @@ else:
     plt.tight_layout(pad=3)
     st.pyplot(fig)
     plt.close(fig)
-
-    st.caption("✚ El recuadro blanco indica la posición de los parámetros actuales. Ajusta los sliders para actualizar.")
+    st.caption("✚ El recuadro blanco indica la posición de los parámetros actuales.")
