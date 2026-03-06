@@ -45,7 +45,7 @@ d₂ = d₁ - σ · √T
 
 ---
 
-## 🔢 The Greeks
+##  The Greeks 🇬🇷
 
 The Greeks measure the **sensitivity of the option price** to changes in market parameters:
 
@@ -59,15 +59,15 @@ The Greeks measure the **sensitivity of the option price** to changes in market 
 
 ---
 
-## Features 📊 
+## Features  
 
-- ✅ Real-time Call & Put pricing
-- ✅ Full Greeks calculation (Δ, Γ, Θ, V, ρ)
-- ✅ Moneyness indicator (ITM / ATM / OTM)
-- ✅ Contract value with multiplier
-- ✅ Put-Call parity check
-- ✅ Interactive **heatmap** — visualize Call & Put prices across Spot × Volatility ranges
-- ✅ Dark-themed professional UI
+-  Real-time Call & Put pricing
+-  Full Greeks calculation (Δ, Γ, Θ, V, ρ)
+-  Moneyness indicator (ITM / ATM / OTM)
+-  Contract value with multiplier
+-  Put-Call parity check
+-  Interactive **heatmap** — visualize Call & Put prices across Spot × Volatility ranges
+-  Dark-themed professional UI
 
 ---
 
@@ -144,7 +144,7 @@ The app will open automatically in your browser at `http://localhost:8501`.
 
 ---
 
-## 📖 References
+##  References
 
 - Black, F. & Scholes, M. (1973). *The Pricing of Options and Corporate Liabilities*. Journal of Political Economy.
 - Merton, R. C. (1973). *Theory of Rational Option Pricing*. Bell Journal of Economics.
