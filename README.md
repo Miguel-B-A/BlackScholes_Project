@@ -2,7 +2,7 @@
 
 A personal implementation of the **Black–Scholes–Merton (BSM)** model for pricing European-style options, with an interactive Streamlit dashboard.
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://YOUR-APP-URL.streamlit.app)
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://blackscholes-miguel-b-a.streamlit.app)
 
 ---
 
